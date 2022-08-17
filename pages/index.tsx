@@ -44,13 +44,19 @@ const Home: NextPage = () => {
             <h2>Zenn</h2>
           </a>
         </div>
+
+        <div>
+          <span className={styles.logo}>
+            <img src="/icon.svg" alt="Seitaro Logo" width={48} height={48} />
+          </span>
+        </div>
       </main>
 
-      <footer className={styles.footer}>
+      {/* <footer className={styles.footer}>
         <span className={styles.logo}>
           <img src="/icon.svg" alt="Seitaro Logo" width={48} height={48} />
         </span>
-      </footer>
+      </footer> */}
     </div>
   )
 }
