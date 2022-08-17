@@ -48,7 +48,7 @@ const Home: NextPage = () => {
 
       <footer className={styles.footer}>
         <span className={styles.logo}>
-          <Image src="/icon.svg" alt="Seitaro Logo" width={48} height={48} />
+          <img src="/icon.svg" alt="Seitaro Logo" width={48} height={48} />
         </span>
       </footer>
     </div>
