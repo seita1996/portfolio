@@ -14,11 +14,11 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Seitaro Portfolio
+          Seitaro
         </h1>
 
         <p className={styles.description}>
-          Welcome
+          A software developer based in Japan.
         </p>
 
         <div className={styles.grid}>
