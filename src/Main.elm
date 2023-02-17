@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Html exposing (Html, text, div, h1, img)
-import Html.Attributes exposing (src)
+import Html.Attributes exposing (class, src)
 
 
 ---- MODEL ----
@@ -37,8 +37,9 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ img [ src "/logo.svg" ] []
-        , h1 [] [ text "Your Elm App is working!" ]
+        [ img [ src "/logo.svg", class "logo" ] [] 
+        , h1 [] [ text "Seitaro" ]
+        , div [] [ text "A software developer based in Japan." ]
         ]
 
 
