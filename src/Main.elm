@@ -1,8 +1,8 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, text, div, h1, img)
-import Html.Attributes exposing (class, src)
+import Html exposing (..)
+import Html.Attributes exposing (..)
 
 
 ---- MODEL ----
@@ -40,6 +40,13 @@ view model =
         [ img [ src "/logo.svg", class "logo" ] [] 
         , h1 [] [ text "Seitaro" ]
         , div [] [ text "A software developer based in Japan." ]
+        , div [ class "flex" ]
+            [
+                div [ class "sns-card" ] [ a [ href "https://github.com/seita1996" ] [ text "GitHub" ] ]
+            ,   div [ class "sns-card" ] [ a [ href "https://zenn.dev/seita1996" ] [ text "Zenn" ] ]
+            ,   div [ class "sns-card" ] [ a [ href "https://twitter.com/seita_1996" ] [ text "Twitter" ] ]
+            ,   div [ class "sns-card" ] [ a [ href "https://note.com/seita1996" ] [ text "Note" ] ]
+            ]
         ]
 
 

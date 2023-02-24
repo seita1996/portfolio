@@ -28,3 +28,7 @@ img {
 .logo {
   max-width: 100px;
 }
+
+.sns-card {
+  border: solid 1px black;
+}
