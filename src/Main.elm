@@ -3,31 +3,56 @@ module Main exposing (..)
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Http
 
 
 ---- MODEL ----
 
 
-type alias Model =
-    {}
 
+type Model
+    = Failure
+    | Loading
+    | Success String
 
-init : ( Model, Cmd Msg )
-init =
-    ( {}, Cmd.none )
+init : () -> (Model, Cmd Msg)
+init _ =
+    ( Loading
+    , Http.get
+        { url = "https://elm-lang.org/assets/public-opinion.txt"
+        , expect = Http.expectString GotText
+        }
+    )
 
 
 
 ---- UPDATE ----
 
 
+
 type Msg
-    = NoOp
+    = GotText (Result Http.Error String)
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        GotText result ->
+            case result of
+                Ok fullText ->
+                    (Success fullText, Cmd.none)
+
+                Err _ ->
+                    (Failure, Cmd.none)
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
 
 
 
@@ -47,7 +72,21 @@ view model =
             ,   div [ class "sns-card" ] [ a [ href "https://twitter.com/seita_1996" ] [ text "Twitter" ] ]
             ,   div [ class "sns-card" ] [ a [ href "https://note.com/seita1996" ] [ text "Note" ] ]
             ]
+        , div [] [ posts model ]
         ]
+
+
+posts : Model -> Html Msg
+posts model =
+    case model of
+        Failure ->
+            text "I was unable to load your book."
+
+        Loading ->
+            text "Loading..."
+
+        Success fullText ->
+            pre [] [ text fullText ]
 
 
 
@@ -57,8 +96,8 @@ view model =
 main : Program () Model Msg
 main =
     Browser.element
-        { view = view
-        , init = \_ -> init
+        { init = init
         , update = update
-        , subscriptions = always Sub.none
+        , subscriptions = subscriptions
+        , view = view
         }
