@@ -32,3 +32,8 @@ img {
 .sns-card {
   border: solid 1px black;
 }
+
+.post-box {
+  border: solid 1px black;
+  margin: 10px;
+}

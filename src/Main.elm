@@ -2,8 +2,10 @@ module Main exposing (..)
 
 import Browser
 import Html exposing (..)
-import Html.Attributes exposing (..)
+import Html.Attributes exposing (class, src, href)
 import Http
+import Json.Decode as D
+
 
 
 ---- MODEL ----
@@ -13,16 +15,21 @@ import Http
 type Model
     = Failure
     | Loading
-    | Success String
+    | Success ZennPosts
+
+type alias ZennPosts =
+    { items : List Post }
+
+type alias Post =
+    { title : String
+    , pubDate : String
+    , link : String
+    , description : String
+    }
 
 init : () -> (Model, Cmd Msg)
 init _ =
-    ( Loading
-    , Http.get
-        { url = "https://elm-lang.org/assets/public-opinion.txt"
-        , expect = Http.expectString GotText
-        }
-    )
+    (Loading, getZennPosts)
 
 
 
@@ -31,16 +38,15 @@ init _ =
 
 
 type Msg
-    = GotText (Result Http.Error String)
-
+    = GotZennPosts (Result Http.Error ZennPosts)
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
-        GotText result ->
+        GotZennPosts result ->
             case result of
-                Ok fullText ->
-                    (Success fullText, Cmd.none)
+                Ok zennposts ->
+                    (Success zennposts, Cmd.none)
 
                 Err _ ->
                     (Failure, Cmd.none)
@@ -50,6 +56,7 @@ update msg model =
 -- SUBSCRIPTIONS
 
 
+
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
@@ -57,6 +64,7 @@ subscriptions model =
 
 
 ---- VIEW ----
+
 
 
 view : Model -> Html Msg
@@ -75,22 +83,58 @@ view model =
         , div [] [ posts model ]
         ]
 
+postComponent : Post -> Html msg
+postComponent post =
+    div [ class "post-box" ]
+        [ blockquote [] [ a [ href post.link ] [ text post.title ] ]
+        , p [] [ text post.description ]
+        , p [] [ text post.pubDate ]
+        ]
 
 posts : Model -> Html Msg
 posts model =
     case model of
         Failure ->
-            text "I was unable to load your book."
+            text "Something went wrong."
 
         Loading ->
             text "Loading..."
 
-        Success fullText ->
-            pre [] [ text fullText ]
+        Success zennposts ->
+            div []
+                [ div [] (zennposts.items |> List.map postComponent)
+                ]
+
+
+
+---- HTTP ----
+
+
+
+getZennPosts : Cmd Msg
+getZennPosts =
+    Http.get
+        { url = "https://api.rss2json.com/v1/api.json?rss_url=https://zenn.dev/seita1996/feed"
+        , expect = Http.expectJson GotZennPosts zennDecoder
+        }
+
+zennDecoder : D.Decoder ZennPosts
+zennDecoder =
+    D.map ZennPosts
+        (D.field "items" (D.list postDecoder))
+
+postDecoder : D.Decoder Post
+postDecoder =
+    D.map4 Post
+        (D.field "title" D.string)
+        (D.field "pubDate" D.string)
+        (D.field "link" D.string)
+        (D.field "description" D.string)
 
 
 
 ---- PROGRAM ----
+
 
 
 main : Program () Model Msg
