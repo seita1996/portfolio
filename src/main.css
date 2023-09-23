@@ -14,6 +14,9 @@ body {
   margin: 0;
   text-align: center;
   color: #293c4b;
+  max-width: 960px;
+  margin: 0 auto;
+  background-color: rgb(209, 243, 243);
 }
 
 h1 {
@@ -29,11 +32,25 @@ img {
   max-width: 100px;
 }
 
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  justify-content: center;
+}
+
 .sns-card {
-  border: solid 1px black;
+  border: solid 1px rgb(31, 145, 190);
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(241, 241, 241);
+  box-shadow: 5px 5px 0px 1px rgba(128, 128, 128, .2);
 }
 
 .post-box {
-  border: solid 1px black;
+  border: solid 1px rgb(31, 145, 190);
   margin: 10px;
+  background-color: rgb(241, 241, 241);
+  box-shadow: 5px 5px 0px 1px rgba(128, 128, 128, .2);
 }

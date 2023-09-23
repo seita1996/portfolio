@@ -17,7 +17,7 @@ curl https://get.volta.sh | bash
 install node
 
 ```
-volta install node@16.19.0
+volta install node@18.12.1
 ```
 
 install elm
