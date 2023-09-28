@@ -24,7 +24,6 @@ type alias Post =
     { title : String
     , pubDate : String
     , link : String
-    , description : String
     }
 
 init : () -> (Model, Cmd Msg)
@@ -41,7 +40,7 @@ type Msg
     = GotZennPosts (Result Http.Error ZennPosts)
 
 update : Msg -> Model -> (Model, Cmd Msg)
-update msg model =
+update msg _ =
     case msg of
         GotZennPosts result ->
             case result of
@@ -58,7 +57,7 @@ update msg model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.none
 
 
@@ -86,8 +85,8 @@ view model =
 postComponent : Post -> Html msg
 postComponent post =
     div [ class "post-box" ]
-        [ blockquote [] [ a [ href post.link ] [ text post.title ] ]
-        , p [] [ text post.description ]
+        [ a [ href post.link, class "post-box-link" ] []
+        , h3 [] [ text post.title ]
         , p [] [ text post.pubDate ]
         ]
 
@@ -102,7 +101,7 @@ posts model =
 
         Success zennposts ->
             div []
-                [ div [] (zennposts.items |> List.map postComponent)
+                [ div [ class "grid" ] (zennposts.items |> List.map postComponent)
                 ]
 
 
@@ -118,6 +117,13 @@ getZennPosts =
         , expect = Http.expectJson GotZennPosts zennDecoder
         }
 
+getNotePosts : Cmd Msg
+getNotePosts =
+    Http.get
+        { url = "https://api.rss2json.com/v1/api.json?rss_url=https://note.com/seita1996/rss"
+        , expect = Http.expectJson GotZennPosts zennDecoder
+        }
+
 zennDecoder : D.Decoder ZennPosts
 zennDecoder =
     D.map ZennPosts
@@ -125,11 +131,10 @@ zennDecoder =
 
 postDecoder : D.Decoder Post
 postDecoder =
-    D.map4 Post
+    D.map3 Post
         (D.field "title" D.string)
         (D.field "pubDate" D.string)
         (D.field "link" D.string)
-        (D.field "description" D.string)
 
 
 

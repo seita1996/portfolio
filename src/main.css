@@ -16,8 +16,25 @@ body {
   color: #293c4b;
   max-width: 960px;
   margin: 0 auto;
-  background-color: rgb(209, 243, 243);
+  background: linear-gradient(68deg, #D46E22, #22C1D4, #BA22D4);
+  background-size: 600% 600%;
+  animation: GradientBackground 30s ease infinite;
 }
+
+@keyframes GradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+};
+
 
 h1 {
   font-size: 30px;
@@ -40,8 +57,14 @@ img {
   justify-content: center;
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 10px;
+  row-gap: 1em;
+}
+
 .sns-card {
-  border: solid 1px rgb(31, 145, 190);
   margin: 10px;
   padding: 10px;
   background-color: rgb(241, 241, 241);
@@ -49,8 +72,20 @@ img {
 }
 
 .post-box {
-  border: solid 1px rgb(31, 145, 190);
+  position: relative;
   margin: 10px;
   background-color: rgb(241, 241, 241);
   box-shadow: 5px 5px 0px 1px rgba(128, 128, 128, .2);
+  border-radius: 10px;
+}
+.post-box-link::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: auto;
+  content: "";
+  background-color: transparent;
 }
